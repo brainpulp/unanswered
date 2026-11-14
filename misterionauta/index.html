@@ -13,11 +13,34 @@ button,input{font:inherit}.masthead{height:62px;position:sticky;top:0;z-index:20
 @media(max-width:640px){.masthead{height:58px;padding:0 12px}.brand b{font-size:12px}.brand small{font-size:10px}.ctl{height:34px;min-width:33px}.controls-extra{top:58px}.main{padding:0;margin:0 auto 50px}.paper{border:0;border-radius:0;box-shadow:none;padding:28px 20px 45px}.font-size-value{min-width:27px}.tools{gap:0}}
 @media(max-width:370px){.brand small{display:none}.ctl{min-width:30px}}
 @media print{.masthead,.controls-extra,.progress,.drawer,#scrim,.booknote{display:none!important}.main{margin:0;padding:0;max-width:none}.paper{padding:0;border:0;box-shadow:none}body{background:#fff;color:#111}#manuscript{font-size:12pt;line-height:1.5}#manuscript h2.chapter{break-before:page}}
+
+.book-mark{background:#ffe187;color:inherit;border-radius:2px;box-decoration-break:clone;-webkit-box-decoration-break:clone;cursor:pointer}
+body.dark .book-mark{background:#725a1d}
+#annotation-trigger{display:none;position:fixed;left:50%;transform:translateX(-50%);bottom:max(24px,env(safe-area-inset-bottom));z-index:140;padding:13px 18px;border:0;border-radius:25px;background:#24675a;color:white;box-shadow:0 4px 23px #0005;font:600 14px system-ui;white-space:nowrap}
+#annotation-trigger.visible{display:block}
+#annotation-sheet,#annotation-list-sheet{display:none;position:fixed;inset:0;z-index:230;background:#091a1eae;justify-content:center;align-items:center;padding:14px}
+#annotation-sheet.open,#annotation-list-sheet.open{display:flex}
+.annotation-panel{background:var(--paper);color:var(--ink);border-radius:15px;width:min(100%,530px);padding:19px;max-height:calc(100dvh - 28px);overflow:auto;font-family:system-ui}
+.annotation-panel h2{font-size:19px;margin:0 0 12px}
+.annotation-panel .quote{font-family:Georgia,serif;font-size:16px;line-height:1.45;padding:12px;background:var(--bg);border-left:3px solid #e5bd48;margin:8px 0 15px;max-height:155px;overflow:auto;white-space:pre-wrap}
+.annotation-panel textarea{width:100%;min-height:118px;border-radius:8px;border:1px solid var(--rule);padding:11px;font:15px/1.5 system-ui;background:var(--paper);color:var(--ink);resize:vertical}
+.annotation-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;margin-top:14px}
+.annotation-actions button{font:600 13px system-ui;border:1px solid var(--rule);background:transparent;color:var(--ink);border-radius:8px;padding:10px 12px}
+.annotation-actions button.primary{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.annotation-actions button.danger{color:#bf5d50}
+#annotation-list-sheet .annotation-item{border:1px solid var(--rule);border-radius:9px;padding:11px;margin:11px 0}
+.annotation-item small{display:block;color:var(--muted)}
+.annotation-item q{display:block;white-space:pre-wrap;font:15px/1.5 Georgia,serif;padding:8px 11px;margin:8px 0;background:var(--bg);border-left:3px solid #e5bd48}
+.annotation-item p{white-space:pre-wrap;font-size:14px;line-height:1.4;margin:7px 0}
+.annotation-item button{border:0;background:transparent;color:var(--accent);font:600 13px system-ui;padding:8px 8px 5px 0}
+#annotation-note-count{font-size:10px;vertical-align:super;color:var(--accent)}
+#annotation-list-status{font-size:12px;color:var(--accent);min-height:20px}
+@media print{#annotation-trigger,#annotation-sheet,#annotation-list-sheet,#annotations-button{display:none!important}}
 </style></head>
 <body><div class="progress" role="presentation"><div id="progressFill"></div></div>
 <header class="masthead"><div class="tools"><button type="button" class="ctl" id="tocBtn" aria-label="Abrir índice" title="Índice"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></div>
 <div class="brand"><b>EL MISTERIONAUTA</b><small id="sectionName">Pablo Turek Zacuto</small></div>
-<div class="tools"><button type="button" class="ctl" id="minus" aria-label="Achicar letra" title="Achicar letra">A−</button><span class="font-size-value" id="fontReadout">21px</span><button type="button" class="ctl" id="plus" aria-label="Agrandar letra" title="Agrandar letra">A+</button><button type="button" class="ctl" id="themeBtn" title="Claro / oscuro"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M20 15.1A8 8 0 0 1 8.9 4 8.1 8.1 0 1 0 20 15.1Z"/></svg></button><button type="button" class="ctl" id="settingsBtn" aria-label="Más opciones de lectura" aria-expanded="false" title="Opciones"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M4 6h16M7 6v4M4 12h16m-5 0v4M4 18h16M10 18v-4"/></svg></button></div></header>
+<div class="tools"><button type="button" class="ctl" id="minus" aria-label="Achicar letra" title="Achicar letra">A−</button><span class="font-size-value" id="fontReadout">21px</span><button type="button" class="ctl" id="plus" aria-label="Agrandar letra" title="Agrandar letra">A+</button><button type="button" class="ctl" id="themeBtn" title="Claro / oscuro"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M20 15.1A8 8 0 0 1 8.9 4 8.1 8.1 0 1 0 20 15.1Z"/></svg></button><button type="button" class="ctl" id="annotations-button" title="Mis resaltados y notas" aria-label="Mis resaltados y notas" style="font:23px Georgia,serif">✎<sup id="annotation-note-count"></sup></button><button type="button" class="ctl" id="settingsBtn" aria-label="Más opciones de lectura" aria-expanded="false" title="Opciones"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M4 6h16M7 6v4M4 12h16m-5 0v4M4 18h16M10 18v-4"/></svg></button></div></header>
 <div id="moreControls" class="controls-extra"><div class="controls-row"><label>Tamaño <input id="fontSlider" type="range" min="16" max="34" step="1" aria-label="Tamaño de letra"></label><label>Interlineado <input id="lineSlider" type="range" min="1.25" max="2.1" step="0.05"></label><label>Columna <input id="widthSlider" type="range" min="455" max="820" step="5"></label><div class="segment" role="group" aria-label="Tipografía"><button type="button" data-font="serif" aria-pressed="true">Con serif</button><button type="button" data-font="sans" aria-pressed="false">Sin serif</button></div><label><input id="pagesCheck" type="checkbox"> Páginas del original</label><button type="button" class="ctl" id="topBtn" title="Volver al comienzo" aria-label="Volver al comienzo"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="m7 14 5-5 5 5M12 9v12"/></svg></button></div></div>
 <div id="scrim" aria-hidden="true"></div><nav class="drawer" id="drawer" aria-hidden="true"><div class="drawer-head"><h2>CAPÍTULOS</h2><button type="button" id="tocClose" class="ctl" aria-label="Cerrar índice"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><ol class="toc"><li><a href="#capitulo-1">1. El Domo</a></li><li><a href="#capitulo-2">2. El Zeide</a></li><li><a href="#capitulo-3">3. El misterionauta</a></li><li><a href="#capitulo-4">4. Pito de oro</a></li><li><a href="#capitulo-5">5. Texas</a></li><li><a href="#capitulo-6">6. Cambiar la piel</a></li><li><a href="#capitulo-7">7. El arte y la música</a></li><li><a href="#capitulo-8">8. El misterionauta 2</a></li></ol><p class="tip">Lector sin conexión. Para compartirlo, enviá este archivo HTML. Los controles de tamaño, interlineado y modo oscuro funcionan dentro del archivo.</p></nav>
 <main class="main"><article class="paper"><div id="manuscript" lang="es"><span class="page-number" data-page="1" aria-hidden="true">1</span>
@@ -719,6 +742,23 @@ button,input{font:inherit}.masthead{height:62px;position:sticky;top:0;z-index:20
 <p class="prose">Aprendí de chico a iluminarme la cara para existir, y me pasé la vida encendiéndome para no desaparecer.</p>
 <p class="prose">Ya lo conté: aprender a quedarme fue aprender a no ser el primero y a multiplicarme: a pensar de a catorce y no de a uno, a calcular en función de una mesa entera. Aquel que fui, que durante tanto tiempo reclamó el podio, se corrió, y ahí en el hueco que quedó vacante entró, sin sigilo y naturalmente, la fiesta. Ambos nos elegimos.</p>
 <p class="prose">Al final, la muda más dura fue la que guardé en silencio: dejarme amar. No fue el amor el que me rescató, sino la voluntad de elegirlo. Y lo que hoy me conmueve ya no es mi historia, sino lo que viene después de ella: mis hijos tienen un cuarto que sí es. Paredes con color, una mesa para catorce, la puerta abierta.</p></div></article><p class="booknote">Texto procedente de «EL MISTERIONAUTA FINAL.pdf». Reajuste visual de línea y paginación; contenido textual sin correcciones.</p></main>
+
+<button type="button" id="annotation-trigger">✎ Resaltar + nota</button>
+<div id="annotation-sheet" role="dialog" aria-modal="true" aria-label="Agregar comentario"><div class="annotation-panel">
+<h2 id="annotation-editor-title">Resaltar y comentar</h2>
+<div id="annotation-selected-quote" class="quote"></div>
+<label for="annotation-comment" style="font-size:13px">Nota para el autor (opcional)</label>
+<textarea id="annotation-comment" placeholder="Escribí tu observación..."></textarea>
+<div class="annotation-actions"><button type="button" id="annotation-delete" class="danger" hidden>Eliminar</button><button type="button" id="annotation-cancel">Cancelar</button><button type="button" id="annotation-save" class="primary">Guardar</button></div>
+</div></div>
+<div id="annotation-list-sheet" role="dialog" aria-modal="true" aria-label="Resaltados guardados"><div class="annotation-panel">
+<h2>Mis resaltados y notas</h2>
+<p style="font:13px/1.5 system-ui;color:var(--muted)">Se guardan en este dispositivo. Podés compartir un informe o el libro completo con todas tus marcas.</p>
+<div id="annotation-list"></div>
+<div class="annotation-actions"><button type="button" id="annotation-copy">Copiar notas</button><button type="button" id="annotation-export-report">Exportar informe</button><button type="button" id="annotation-export-book" class="primary">Compartir libro anotado</button><button type="button" id="annotation-close">Cerrar</button></div>
+<p id="annotation-list-status" role="status"></p>
+</div></div>
+
 <script>
 (() => {
  const byId=(id)=>document.getElementById(id);
@@ -769,4 +809,144 @@ button,input{font:inherit}.masthead{height:62px;position:sticky;top:0;z-index:20
  window.addEventListener('scroll',handleScroll,{passive:true});window.addEventListener('resize',handleScroll);
  update();handleScroll();
 })();
+</script>
+<script data-annotation-program>
+
+(function(){
+"use strict";
+var root=document.getElementById("manuscript");
+if(!root)return;
+var el=function(id){return document.getElementById(id)};
+var fullText=root.textContent,storageKey="misterionauta-annotated-v1";
+var embedded=el("embedded-book-annotations"),snapshot=!!embedded;
+var notes=[],pending=null,editing=null,selectTimer=null;
+var escapeText=function(s){return String(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")};
+var valid=function(n){return n&&Number.isInteger(n.start)&&Number.isInteger(n.end)&&n.start>=0&&n.end>n.start&&n.end<=fullText.length&&fullText.slice(n.start,n.end)===n.anchor};
+try{
+ var imported=JSON.parse(embedded?embedded.textContent:localStorage.getItem(storageKey)||"[]");
+ if(Array.isArray(imported))notes=imported.filter(valid).sort(function(a,b){return a.start-b.start});
+}catch(e){}
+function save(){if(snapshot)return;try{localStorage.setItem(storageKey,JSON.stringify(notes))}catch(e){status("Almacenamiento no disponible; exportá las notas antes de salir.")}}
+function offsetAt(node,offset){var r=document.createRange();r.setStart(root,0);r.setEnd(node,offset);return r.cloneContents().textContent.length}
+var chapters=Array.from(root.querySelectorAll("h2.chapter"));
+function chapterAt(start){var result="Introducción";for(var i=0;i<chapters.length;i++){if(offsetAt(chapters[i],0)>start)break;result=chapters[i].textContent.trim()}return result}
+function show(id,yes){el(id).classList.toggle("open",!!yes)}
+function status(s){el("annotation-list-status").textContent=s}
+function hideTrigger(){el("annotation-trigger").classList.remove("visible");window.getSelection()&&window.getSelection().removeAllRanges()}
+function markText(){
+ root.querySelectorAll(".book-mark").forEach(function(m){m.replaceWith(document.createTextNode(m.textContent))});
+ root.normalize();
+ notes.forEach(function(n){
+  if(!valid(n))return;
+  var w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT),items=[],t,pos=0;
+  while((t=w.nextNode())){items.push([t,pos]);pos+=t.textContent.length}
+  items.forEach(function(entry){
+   var node=entry[0],base=entry[1],s=Math.max(0,n.start-base),e=Math.min(node.textContent.length,n.end-base);
+   if(e<=s)return;
+   var piece=node;if(s)piece=piece.splitText(s);
+   if(e-s<piece.textContent.length)piece.splitText(e-s);
+   var m=document.createElement("mark");m.className="book-mark";m.dataset.annotationId=n.id;m.tabIndex=0;m.setAttribute("aria-label","Resaltado. Tocar para ver nota.");
+   piece.replaceWith(m);m.appendChild(piece);
+  });
+ });
+ el("annotation-note-count").textContent=notes.length?String(notes.length):"";
+}
+function capture(){
+ if(snapshot)return;
+ var sel=window.getSelection();
+ if(!sel||sel.isCollapsed||!sel.rangeCount){el("annotation-trigger").classList.remove("visible");return}
+ var r=sel.getRangeAt(0);
+ if(!root.contains(r.commonAncestorContainer)||!r.toString().trim())return;
+ var s=offsetAt(r.startContainer,r.startOffset),e=offsetAt(r.endContainer,r.endOffset);
+ if(e<=s||e-s>6000)return;
+ pending={start:s,end:e,anchor:fullText.slice(s,e),quote:r.toString(),chapter:chapterAt(s)};
+ el("annotation-trigger").classList.add("visible");
+}
+document.addEventListener("selectionchange",function(){clearTimeout(selectTimer);selectTimer=setTimeout(capture,210)});
+document.addEventListener("mouseup",function(){setTimeout(capture,40)});
+document.addEventListener("touchend",function(){setTimeout(capture,310)},{passive:true});
+function editor(n){
+ hideTrigger();editing=n.id||null;
+ el("annotation-editor-title").textContent=editing?"Editar resaltado":"Resaltar y comentar";
+ el("annotation-selected-quote").textContent=n.quote;
+ el("annotation-comment").value=n.note||"";
+ el("annotation-delete").hidden=!editing||snapshot;
+ el("annotation-save").hidden=snapshot;
+ el("annotation-comment").readOnly=snapshot;
+ show("annotation-sheet",true);
+}
+function newMark(){
+ if(!pending)return;
+ if(notes.some(function(n){return pending.start<n.end&&pending.end>n.start})){alert("Este fragmento se superpone con otro resaltado. Tocá la marca existente para editar.");return}
+ editor(pending);
+}
+el("annotation-trigger").addEventListener("mousedown",function(e){e.preventDefault()});
+el("annotation-trigger").addEventListener("touchstart",function(e){e.preventDefault();newMark()},{passive:false});
+el("annotation-trigger").addEventListener("click",newMark);
+el("annotation-save").addEventListener("click",function(){
+ if(snapshot)return;
+ var note=el("annotation-comment").value;
+ if(editing){var item=notes.find(function(n){return n.id===editing});if(item)item.note=note}
+ else if(pending){notes.push(Object.assign({id:"a"+Date.now()+Math.random().toString(36).slice(2),note:note},pending));notes.sort(function(a,b){return a.start-b.start})}
+ save();markText();show("annotation-sheet",false);pending=null;
+});
+el("annotation-delete").addEventListener("click",function(){
+ if(snapshot)return;
+ notes=notes.filter(function(n){return n.id!==editing});save();markText();show("annotation-sheet",false);renderList();
+});
+el("annotation-cancel").addEventListener("click",function(){show("annotation-sheet",false)});
+root.addEventListener("click",function(e){var m=e.target.closest&&e.target.closest(".book-mark");if(!m)return;var n=notes.find(function(n){return n.id===m.dataset.annotationId});if(n)editor(n)});
+root.addEventListener("keydown",function(e){if(e.key!=="Enter"&&e.key!==" ")return;var m=e.target.closest&&e.target.closest(".book-mark");if(!m)return;e.preventDefault();var n=notes.find(function(n){return n.id===m.dataset.annotationId});if(n)editor(n)});
+function renderList(){
+ var list=el("annotation-list");list.replaceChildren();
+ if(!notes.length){var p=document.createElement("p");p.textContent="Seleccioná una frase en el libro y tocá «Resaltar + nota».";list.append(p);return}
+ notes.forEach(function(n){
+  var card=document.createElement("div");card.className="annotation-item";
+  var loc=document.createElement("small");loc.textContent=n.chapter;
+  var q=document.createElement("q");q.textContent=n.quote;
+  var comment=document.createElement("p");comment.textContent=n.note||"(Sin comentario)";
+  var jump=document.createElement("button");jump.textContent="Ir al texto";jump.onclick=function(){show("annotation-list-sheet",false);var m=Array.from(root.querySelectorAll(".book-mark")).find(function(x){return x.dataset.annotationId===n.id});if(m){m.scrollIntoView({behavior:"smooth",block:"center"});m.focus({preventScroll:true})}};
+  var edit=document.createElement("button");edit.textContent="Ver / editar";edit.onclick=function(){show("annotation-list-sheet",false);editor(n)};
+  card.append(loc,q,comment,jump,edit);list.append(card);
+ });
+}
+el("annotations-button").addEventListener("click",function(){hideTrigger();renderList();status(snapshot?"Copia con anotaciones incluidas.":"");show("annotation-list-sheet",true)});
+el("annotation-close").addEventListener("click",function(){show("annotation-list-sheet",false)});
+["annotation-sheet","annotation-list-sheet"].forEach(function(id){el(id).addEventListener("click",function(e){if(e.target===el(id))show(id,false)})});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"){show("annotation-sheet",false);show("annotation-list-sheet",false)}});
+function reportText(){return notes.map(function(n,i){return (i+1)+". "+n.chapter+"\n“"+n.quote+"”\n"+(n.note||"(Sin comentario)")}).join("\n\n---\n\n")}
+function reportHtml(){
+ var items=notes.map(function(n,i){return "<section><h2>"+(i+1)+". "+escapeText(n.chapter)+"</h2><blockquote>"+escapeText(n.quote)+"</blockquote><p>"+escapeText(n.note||"(Sin comentario)")+"</p></section>"}).join("");
+ return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El Misterionauta — observaciones</title><style>body{font:17px/1.6 Georgia,serif;max-width:720px;margin:30px auto;padding:0 20px;color:#283431}h1,h2{font-family:system-ui}h2{font-size:18px;margin-top:35px}blockquote{border-left:3px solid #d8b452;padding:10px 15px;background:#faf8ef;white-space:pre-wrap}p{white-space:pre-wrap}section{padding-bottom:12px;border-bottom:1px solid #ddd}</style></head><body><h1>El Misterionauta — notas para el autor</h1><p>Pablo Turek Zacuto · '+notes.length+" fragmentos</p>"+items+"</body></html>";
+}
+function annotatedHtml(){
+ var clone=document.documentElement.cloneNode(true);
+ clone.querySelectorAll(".book-mark").forEach(function(m){m.replaceWith(document.createTextNode(m.textContent))});
+ clone.querySelector("#manuscript").normalize();
+ var older=clone.querySelector("#embedded-book-annotations");if(older)older.remove();
+ var script=document.createElement("script");script.id="embedded-book-annotations";script.type="application/json";script.textContent=JSON.stringify(notes).replace(/</g,"\\u003c");
+ var program=clone.querySelector("script[data-annotation-program]");if(!program)throw Error("Falta programa");
+ program.before(script);
+ clone.querySelector("#annotation-sheet").classList.remove("open");
+ clone.querySelector("#annotation-list-sheet").classList.remove("open");
+ clone.querySelector("#annotation-trigger").classList.remove("visible");
+ return "<!doctype html>\n"+clone.outerHTML;
+}
+function fileFor(s,name){return new File([s],name,{type:"text/html"})}
+function download(f){var u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},30000)}
+el("annotation-export-report").addEventListener("click",function(){if(!notes.length){status("Todavía no hay marcas.");return}download(fileFor(reportHtml(),"El_Misterionauta_mis_notas.html"));status("Informe descargado; podés adjuntarlo al autor.")});
+el("annotation-copy").addEventListener("click",async function(){
+ if(!notes.length){status("Todavía no hay marcas.");return}
+ try{await navigator.clipboard.writeText(reportText());status("Notas copiadas para pegar en WhatsApp o correo.")}
+ catch(e){status("No se pudo copiar. Usá Exportar informe.")}
+});
+el("annotation-export-book").addEventListener("click",async function(){
+ if(!notes.length){status("Marcá alguna frase antes de exportar.");return}
+ var f=fileFor(annotatedHtml(),"El_Misterionauta_libro_con_anotaciones.html");
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})&&navigator.share){await navigator.share({files:[f],title:"El Misterionauta anotado"});status("Archivo compartido.");return}}catch(e){if(e.name==="AbortError")return}
+ download(f);status("Descargado. Podés compartir el archivo HTML con el autor.");
+});
+markText();
+})();
+
 </script></body></html>
