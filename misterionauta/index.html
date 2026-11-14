@@ -42,7 +42,7 @@ body.dark .book-mark{background:#725a1d}
 <div class="brand"><b>EL MISTERIONAUTA</b><small id="sectionName">Pablo Turek Zacuto</small></div>
 <div class="tools"><button type="button" class="ctl" id="minus" aria-label="Achicar letra" title="Achicar letra">A−</button><span class="font-size-value" id="fontReadout">21px</span><button type="button" class="ctl" id="plus" aria-label="Agrandar letra" title="Agrandar letra">A+</button><button type="button" class="ctl" id="themeBtn" title="Claro / oscuro"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M20 15.1A8 8 0 0 1 8.9 4 8.1 8.1 0 1 0 20 15.1Z"/></svg></button><button type="button" class="ctl" id="annotations-button" title="Mis resaltados y notas" aria-label="Mis resaltados y notas" style="font:23px Georgia,serif">✎<sup id="annotation-note-count"></sup></button><button type="button" class="ctl" id="settingsBtn" aria-label="Más opciones de lectura" aria-expanded="false" title="Opciones"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M4 6h16M7 6v4M4 12h16m-5 0v4M4 18h16M10 18v-4"/></svg></button></div></header>
 <div id="moreControls" class="controls-extra"><div class="controls-row"><label>Tamaño <input id="fontSlider" type="range" min="16" max="34" step="1" aria-label="Tamaño de letra"></label><label>Interlineado <input id="lineSlider" type="range" min="1.25" max="2.1" step="0.05"></label><label>Columna <input id="widthSlider" type="range" min="455" max="820" step="5"></label><div class="segment" role="group" aria-label="Tipografía"><button type="button" data-font="serif" aria-pressed="true">Con serif</button><button type="button" data-font="sans" aria-pressed="false">Sin serif</button></div><label><input id="pagesCheck" type="checkbox"> Páginas del original</label><button type="button" class="ctl" id="topBtn" title="Volver al comienzo" aria-label="Volver al comienzo"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="m7 14 5-5 5 5M12 9v12"/></svg></button></div></div>
-<div id="scrim" aria-hidden="true"></div><nav class="drawer" id="drawer" aria-hidden="true"><div class="drawer-head"><h2>CAPÍTULOS</h2><button type="button" id="tocClose" class="ctl" aria-label="Cerrar índice"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><ol class="toc"><li><a href="#capitulo-1">1. El Domo</a></li><li><a href="#capitulo-2">2. El Zeide</a></li><li><a href="#capitulo-3">3. El misterionauta</a></li><li><a href="#capitulo-4">4. Pito de oro</a></li><li><a href="#capitulo-5">5. Texas</a></li><li><a href="#capitulo-6">6. Cambiar la piel</a></li><li><a href="#capitulo-7">7. El arte y la música</a></li><li><a href="#capitulo-8">8. El misterionauta 2</a></li></ol><p class="tip">Lector sin conexión. Para compartirlo, enviá este archivo HTML. Los controles de tamaño, interlineado y modo oscuro funcionan dentro del archivo.</p></nav>
+<div id="scrim" aria-hidden="true"></div><nav class="drawer" id="drawer" aria-hidden="true"><div class="drawer-head"><h2>CAPÍTULOS</h2><button type="button" id="tocClose" class="ctl" aria-label="Cerrar índice"><svg viewBox="0 0 24 24" role="presentation" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg></button></div><ol class="toc"><li><a href="#capitulo-1">1. El Domo</a></li><li><a href="#capitulo-2">2. El Zeide</a></li><li><a href="#capitulo-3">3. El misterionauta</a></li><li><a href="#capitulo-4">4. Pito de oro</a></li><li><a href="#capitulo-5">5. Texas</a></li><li><a href="#capitulo-6">6. Cambiar la piel</a></li><li><a href="#capitulo-7">7. El arte y la música</a></li><li><a href="#capitulo-8">8. El misterionauta 2</a></li></ol><p class="tip">Lector sin conexión. Para compartirlo, enviá este archivo HTML. Los controles de tamaño, interlineado y modo oscuro funcionan dentro del archivo. El punto de lectura se guarda automáticamente en este navegador.</p></nav>
 <main class="main"><article class="paper"><div id="manuscript" lang="es"><span class="page-number" data-page="1" aria-hidden="true">1</span>
 <h1 class="cover-title"><b>EL MISTERIONAUTA</b></h1>
 <p class="cover-author">Pablo Turek Zacuto</p>
@@ -917,7 +917,66 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){show("annot
 function reportText(){return notes.map(function(n,i){return (i+1)+". "+n.chapter+"\n“"+n.quote+"”\n"+(n.note||"(Sin comentario)")}).join("\n\n---\n\n")}
 function reportHtml(){
  var items=notes.map(function(n,i){return "<section><h2>"+(i+1)+". "+escapeText(n.chapter)+"</h2><blockquote>"+escapeText(n.quote)+"</blockquote><p>"+escapeText(n.note||"(Sin comentario)")+"</p></section>"}).join("");
- return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El Misterionauta — observaciones</title><style>body{font:17px/1.6 Georgia,serif;max-width:720px;margin:30px auto;padding:0 20px;color:#283431}h1,h2{font-family:system-ui}h2{font-size:18px;margin-top:35px}blockquote{border-left:3px solid #d8b452;padding:10px 15px;background:#faf8ef;white-space:pre-wrap}p{white-space:pre-wrap}section{padding-bottom:12px;border-bottom:1px solid #ddd}</style></head><body><h1>El Misterionauta — notas para el autor</h1><p>Pablo Turek Zacuto · '+notes.length+" fragmentos</p>"+items+"</body></html>";
+ return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El Misterionauta — observaciones</title><style>body{font:17px/1.6 Georgia,serif;max-width:720px;margin:30px auto;padding:0 20px;color:#283431}h1,h2{font-family:system-ui}h2{font-size:18px;margin-top:35px}blockquote{border-left:3px solid #d8b452;padding:10px 15px;background:#faf8ef;white-space:pre-wrap}p{white-space:pre-wrap}section{padding-bottom:12px;border-bottom:1px solid #ddd}</style></head><body><h1>El Misterionauta — notas para el autor</h1><p>Pablo Turek Zacuto · '+notes.length+" fragmentos</p>"+items+"
+<script data-reading-position>
+/* Marcador automático local: se fija a un bloque de texto, no a una página
+   de píxeles, para conservar el punto de lectura al cambiar la letra. */
+(function(){
+ "use strict";
+ const manuscript=document.getElementById("manuscript");
+ if(!manuscript)return;
+ const blocks=Array.from(manuscript.querySelectorAll("h1,h2,h3,p,figure,blockquote"));
+ if(!blocks.length)return;
+ const key="misterionauta-reading-position-v1:"+window.location.pathname;
+ const anchorY=()=>Math.min(140,Math.max(90,Math.floor(window.innerHeight*0.18)));
+ const cap=(v,min,max)=>Math.min(max,Math.max(min,v));
+ let ready=false,debounce=null;
+ try{if("scrollRestoration" in history)history.scrollRestoration="manual"}catch(e){}
+ function read(){
+  try{
+   const raw=localStorage.getItem(key);
+   if(!raw)return null;
+   const pos=JSON.parse(raw);
+   if(!Number.isInteger(pos.index)||pos.index<0||pos.index>=blocks.length||!Number.isFinite(pos.ratio))return null;
+   return pos;
+  }catch(e){return null}
+ }
+ function current(){
+  const y=anchorY();
+  let lo=0,hi=blocks.length-1,which=0;
+  while(lo<=hi){
+   const mid=(lo+hi)>>1;
+   if(blocks[mid].getBoundingClientRect().top<=y){which=mid;lo=mid+1}
+   else hi=mid-1;
+  }
+  let rect=blocks[which].getBoundingClientRect();
+  if(rect.bottom<y&&which<blocks.length-1){which++;rect=blocks[which].getBoundingClientRect()}
+  return {index:which,ratio:cap((y-rect.top)/Math.max(1,rect.height),0,1)};
+ }
+ function save(){
+  if(!ready)return;
+  try{localStorage.setItem(key,JSON.stringify(current()))}catch(e){}
+ }
+ function schedule(){if(!ready)return;clearTimeout(debounce);debounce=setTimeout(save,350)}
+ window.addEventListener("scroll",schedule,{passive:true});
+ window.addEventListener("resize",schedule,{passive:true});
+ window.addEventListener("pagehide",save);
+ document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden")save()});
+ function restore(){
+  const pos=read();
+  if(!pos||window.location.hash){ready=true;return}
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+   const b=blocks[pos.index],r=b.getBoundingClientRect();
+   const target=window.scrollY+r.top+cap(pos.ratio,0,1)*r.height-anchorY();
+   window.scrollTo({top:Math.max(0,target),behavior:"instant"});
+   ready=true;
+  }));
+ }
+ if(document.readyState==="complete")restore();
+ else window.addEventListener("load",restore,{once:true});
+})();
+</script>
+</body></html>";
 }
 function annotatedHtml(){
  var clone=document.documentElement.cloneNode(true);
