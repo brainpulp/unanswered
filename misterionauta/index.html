@@ -917,7 +917,39 @@ document.addEventListener("keydown",function(e){if(e.key==="Escape"){show("annot
 function reportText(){return notes.map(function(n,i){return (i+1)+". "+n.chapter+"\n“"+n.quote+"”\n"+(n.note||"(Sin comentario)")}).join("\n\n---\n\n")}
 function reportHtml(){
  var items=notes.map(function(n,i){return "<section><h2>"+(i+1)+". "+escapeText(n.chapter)+"</h2><blockquote>"+escapeText(n.quote)+"</blockquote><p>"+escapeText(n.note||"(Sin comentario)")+"</p></section>"}).join("");
- return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El Misterionauta — observaciones</title><style>body{font:17px/1.6 Georgia,serif;max-width:720px;margin:30px auto;padding:0 20px;color:#283431}h1,h2{font-family:system-ui}h2{font-size:18px;margin-top:35px}blockquote{border-left:3px solid #d8b452;padding:10px 15px;background:#faf8ef;white-space:pre-wrap}p{white-space:pre-wrap}section{padding-bottom:12px;border-bottom:1px solid #ddd}</style></head><body><h1>El Misterionauta — notas para el autor</h1><p>Pablo Turek Zacuto · '+notes.length+" fragmentos</p>"+items+"
+ return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>El Misterionauta — observaciones</title><style>body{font:17px/1.6 Georgia,serif;max-width:720px;margin:30px auto;padding:0 20px;color:#283431}h1,h2{font-family:system-ui}h2{font-size:18px;margin-top:35px}blockquote{border-left:3px solid #d8b452;padding:10px 15px;background:#faf8ef;white-space:pre-wrap}p{white-space:pre-wrap}section{padding-bottom:12px;border-bottom:1px solid #ddd}</style></head><body><h1>El Misterionauta — notas para el autor</h1><p>Pablo Turek Zacuto · '+notes.length+" fragmentos</p>"+items+"</body></html>";
+}
+function annotatedHtml(){
+ var clone=document.documentElement.cloneNode(true);
+ clone.querySelectorAll(".book-mark").forEach(function(m){m.replaceWith(document.createTextNode(m.textContent))});
+ clone.querySelector("#manuscript").normalize();
+ var older=clone.querySelector("#embedded-book-annotations");if(older)older.remove();
+ var script=document.createElement("script");script.id="embedded-book-annotations";script.type="application/json";script.textContent=JSON.stringify(notes).replace(/</g,"\\u003c");
+ var program=clone.querySelector("script[data-annotation-program]");if(!program)throw Error("Falta programa");
+ program.before(script);
+ clone.querySelector("#annotation-sheet").classList.remove("open");
+ clone.querySelector("#annotation-list-sheet").classList.remove("open");
+ clone.querySelector("#annotation-trigger").classList.remove("visible");
+ return "<!doctype html>\n"+clone.outerHTML;
+}
+function fileFor(s,name){return new File([s],name,{type:"text/html"})}
+function download(f){var u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},30000)}
+el("annotation-export-report").addEventListener("click",function(){if(!notes.length){status("Todavía no hay marcas.");return}download(fileFor(reportHtml(),"El_Misterionauta_mis_notas.html"));status("Informe descargado; podés adjuntarlo al autor.")});
+el("annotation-copy").addEventListener("click",async function(){
+ if(!notes.length){status("Todavía no hay marcas.");return}
+ try{await navigator.clipboard.writeText(reportText());status("Notas copiadas para pegar en WhatsApp o correo.")}
+ catch(e){status("No se pudo copiar. Usá Exportar informe.")}
+});
+el("annotation-export-book").addEventListener("click",async function(){
+ if(!notes.length){status("Marcá alguna frase antes de exportar.");return}
+ var f=fileFor(annotatedHtml(),"El_Misterionauta_libro_con_anotaciones.html");
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})&&navigator.share){await navigator.share({files:[f],title:"El Misterionauta anotado"});status("Archivo compartido.");return}}catch(e){if(e.name==="AbortError")return}
+ download(f);status("Descargado. Podés compartir el archivo HTML con el autor.");
+});
+markText();
+})();
+
+</script>
 <script data-reading-position>
 /* Marcador automático local: se fija a un bloque de texto, no a una página
    de píxeles, para conservar el punto de lectura al cambiar la letra. */
@@ -976,36 +1008,4 @@ function reportHtml(){
  else window.addEventListener("load",restore,{once:true});
 })();
 </script>
-</body></html>";
-}
-function annotatedHtml(){
- var clone=document.documentElement.cloneNode(true);
- clone.querySelectorAll(".book-mark").forEach(function(m){m.replaceWith(document.createTextNode(m.textContent))});
- clone.querySelector("#manuscript").normalize();
- var older=clone.querySelector("#embedded-book-annotations");if(older)older.remove();
- var script=document.createElement("script");script.id="embedded-book-annotations";script.type="application/json";script.textContent=JSON.stringify(notes).replace(/</g,"\\u003c");
- var program=clone.querySelector("script[data-annotation-program]");if(!program)throw Error("Falta programa");
- program.before(script);
- clone.querySelector("#annotation-sheet").classList.remove("open");
- clone.querySelector("#annotation-list-sheet").classList.remove("open");
- clone.querySelector("#annotation-trigger").classList.remove("visible");
- return "<!doctype html>\n"+clone.outerHTML;
-}
-function fileFor(s,name){return new File([s],name,{type:"text/html"})}
-function download(f){var u=URL.createObjectURL(f),a=document.createElement("a");a.href=u;a.download=f.name;document.body.append(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},30000)}
-el("annotation-export-report").addEventListener("click",function(){if(!notes.length){status("Todavía no hay marcas.");return}download(fileFor(reportHtml(),"El_Misterionauta_mis_notas.html"));status("Informe descargado; podés adjuntarlo al autor.")});
-el("annotation-copy").addEventListener("click",async function(){
- if(!notes.length){status("Todavía no hay marcas.");return}
- try{await navigator.clipboard.writeText(reportText());status("Notas copiadas para pegar en WhatsApp o correo.")}
- catch(e){status("No se pudo copiar. Usá Exportar informe.")}
-});
-el("annotation-export-book").addEventListener("click",async function(){
- if(!notes.length){status("Marcá alguna frase antes de exportar.");return}
- var f=fileFor(annotatedHtml(),"El_Misterionauta_libro_con_anotaciones.html");
- try{if(navigator.canShare&&navigator.canShare({files:[f]})&&navigator.share){await navigator.share({files:[f],title:"El Misterionauta anotado"});status("Archivo compartido.");return}}catch(e){if(e.name==="AbortError")return}
- download(f);status("Descargado. Podés compartir el archivo HTML con el autor.");
-});
-markText();
-})();
-
-</script></body></html>
+</body></html>
